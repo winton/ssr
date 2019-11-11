@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/fn2/ssr.git"
   },
-  "author": " <>",
+  "author": "Winton Welsh <mail@wintoni.us>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fn2/ssr/issues"
