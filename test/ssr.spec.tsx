@@ -1,0 +1,37 @@
+/** @jsx render.createElement */
+
+import patch from "@fn2/patch"
+import render from "@fn2/render"
+import load, { instance } from "@fn2/loaded"
+import tinyId from "@fn2/tiny-id"
+import undom from "undom"
+
+import expect from "./expect"
+import ssr from "../src"
+
+class Component {
+  render: typeof render = null
+
+  build(): Element {
+    return (
+      <div>
+        <h1>Hello!</h1>
+        <h2>Good to see you here.</h2>
+      </div>
+    )
+  }
+}
+
+const component = new Component()
+
+beforeEach(() => {
+  instance.reset()
+  ssr.resetUndom(undom())
+  load({ component, patch, render, tinyId })
+})
+
+it("serializes", () => {
+  expect(ssr.serializeHtml(component.build())).toBe(
+    "<div><h1>Hello!</h1><h2>Good to see you here.</h2></div>"
+  )
+})
