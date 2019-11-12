@@ -1,12 +1,7 @@
-import undomType from "undom"
-
 export class Ssr {
-  dom: Window
-  undom: typeof undomType = null
+  dom: Window = null
 
   loaded(): void {
-    this.dom = this.undom().defaultView
-
     for (const i in this.dom) {
       if (i !== "document") {
         global[i] = this.dom[i]
@@ -18,10 +13,6 @@ export class Ssr {
     ): HTMLElement => {
       return this.getElementById(this.dom.document.body, id)
     }
-  }
-
-  reset(): void {
-    this.dom = this.undom().defaultView
   }
 
   serialize(el: Element): string {

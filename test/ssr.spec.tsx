@@ -25,10 +25,13 @@ class Component {
 const component = new Component()
 
 beforeEach(() => {
+  const dom = undom()
+
   loaded.reset()
 
   loaded.load({
     component,
+    dom,
     patch,
     render,
     ssr,
@@ -36,7 +39,7 @@ beforeEach(() => {
     undom,
   })
 
-  global["document"] = ssr.dom.document
+  global["document"] = dom.document
 })
 
 it("serializes", () => {
