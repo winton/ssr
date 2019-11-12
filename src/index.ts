@@ -1,38 +1,27 @@
 import undomType from "undom"
 
 export class Ssr {
+  dom: Window
   undom: typeof undomType = null
 
-  getElementById(el: Element, id: string): Element {
-    if (el.id && el.id === id) {
-      return el
-    }
+  loaded(): void {
+    this.dom = this.undom().defaultView
 
-    for (let i = 0; i < el.childNodes.length; i++) {
-      const found = this.getElementById(el[i], id)
-
-      if (found) {
-        return found
+    for (const i in this.dom) {
+      if (i !== "document") {
+        global[i] = this.dom[i]
       }
     }
-  }
 
-  loaded(): void {
-    return this.reset()
+    this.dom.document["getElementById"] = (
+      id: string
+    ): HTMLElement => {
+      return this.getElementById(this.dom.document.body, id)
+    }
   }
 
   reset(): void {
-    global["window"] = this.undom().defaultView
-
-    for (const i in global["window"]) {
-      global[i] = global["window"][i]
-    }
-
-    global["document"]["getElementById"] = (
-      id: string
-    ): Element => {
-      return this.getElementById(document.body, id)
-    }
+    this.dom = this.undom().defaultView
   }
 
   serialize(el: Element): string {
@@ -74,6 +63,23 @@ export class Ssr {
     }
 
     return str + "</" + name + ">"
+  }
+
+  private getElementById(
+    el: HTMLElement,
+    id: string
+  ): HTMLElement {
+    if (el.id && el.id === id) {
+      return el
+    }
+
+    for (let i = 0; i < el.childNodes.length; i++) {
+      const found = this.getElementById(el[i], id)
+
+      if (found) {
+        return found
+      }
+    }
   }
 }
 

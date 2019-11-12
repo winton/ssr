@@ -26,6 +26,7 @@ const component = new Component()
 
 beforeEach(() => {
   loaded.reset()
+
   loaded.load({
     component,
     patch,
@@ -34,6 +35,8 @@ beforeEach(() => {
     tinyId,
     undom,
   })
+
+  global["document"] = ssr.dom.document
 })
 
 it("serializes", () => {
