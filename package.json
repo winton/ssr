@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/fn2/ssr#readme",
   "devDependencies": {
-    "@fn2/loaded": "0.17.0",
-    "@fn2/patch": "0.6.0",
+    "@fn2/loaded": "0.18.0",
+    "@fn2/patch": "0.7.0",
     "@fn2/render": "0.7.0",
     "@fn2/tiny-id": "0.4.0",
     "@types/mocha": "5.2.7",

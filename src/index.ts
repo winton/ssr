@@ -1,6 +1,8 @@
 import undomType from "undom"
 
 export class Ssr {
+  undom: typeof undomType = null
+
   getElementById(el: Element, id: string): Element {
     if (el.id && el.id === id) {
       return el
@@ -15,8 +17,12 @@ export class Ssr {
     }
   }
 
-  resetUndom(undom: any): void {
-    global["window"] = undom.defaultView
+  loaded(): void {
+    return this.reset()
+  }
+
+  reset(): void {
+    global["window"] = this.undom().defaultView
 
     for (const i in global["window"]) {
       global[i] = global["window"][i]
@@ -29,7 +35,7 @@ export class Ssr {
     }
   }
 
-  serializeHtml(el: Element): string {
+  serialize(el: Element): string {
     if (el.nodeType === 3) {
       return el.nodeValue
     }
@@ -61,7 +67,7 @@ export class Ssr {
     str += ">"
 
     for (let i = 0; i < el.childNodes.length; i++) {
-      c = this.serializeHtml(el.childNodes[i] as Element)
+      c = this.serialize(el.childNodes[i] as Element)
       if (c) {
         str += c
       }
