@@ -36,10 +36,7 @@ beforeEach(() => {
     render,
     ssr,
     tinyId,
-    undom,
   })
-
-  global["document"] = dom.document
 })
 
 it("serializes", () => {
