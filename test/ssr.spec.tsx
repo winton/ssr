@@ -44,3 +44,9 @@ it("serializes", () => {
     "<div><h1>Hello!</h1><h2>Good to see you here.</h2></div>"
   )
 })
+
+it("getElementById", () => {
+  const el = <div id="hi" />
+  render.doc.body.appendChild(el)
+  expect(render.doc.getElementById("hi")).toBe(el)
+})

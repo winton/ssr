@@ -64,8 +64,11 @@ export class Ssr {
       return el
     }
 
-    for (let i = 0; i < el.childNodes.length; i++) {
-      const found = this.getElementById(el[i], id)
+    for (let i = 0; i < el.children.length; i++) {
+      const found = this.getElementById(
+        el.children[i] as HTMLElement,
+        id
+      )
 
       if (found) {
         return found
