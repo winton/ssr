@@ -15,6 +15,32 @@ export class Ssr {
     }
   }
 
+  clientScript(
+    component: string,
+    stack: Record<string, string>
+  ): string {
+    let stackImports = `  component: import("${stack[component]}"),\n`
+
+    for (const libName in stack) {
+      if (libName !== component && libName !== "loaded") {
+        stackImports += `  ${libName}: import("${stack[libName]}"),\n`
+      }
+    }
+
+    return `
+const stack = {
+${stackImports}
+}
+import("${stack.loaded}").then((lib) => {
+  window.loaded = lib.default
+  window.process = { env: { LOG: true } }
+  loaded.load(stack)
+  return loaded.wait("${component}")
+}).then(({ component }) => {
+  component.element()
+})`
+  }
+
   serialize(el: Element): string {
     if (el.nodeType === 3) {
       return el.nodeValue
