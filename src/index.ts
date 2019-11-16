@@ -19,7 +19,7 @@ export class Ssr {
     component: string,
     stack: Record<string, string>
   ): string {
-    let stackImports = `  component: import("${stack[component]}"),\n`
+    let stackImports = `  ${component}: import("${stack[component]}"),\n`
 
     for (const libName in stack) {
       if (libName !== component && libName !== "loaded") {
