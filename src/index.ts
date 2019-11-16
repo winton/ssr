@@ -36,8 +36,8 @@ import("${stack.loaded}").then((lib) => {
   window.process = { env: { LOG: true } }
   loaded.load(stack)
   return loaded.wait("${component}")
-}).then(({ component }) => {
-  component.element()
+}).then(({ ${component} }) => {
+  ${component}.element()
 })`
   }
 
