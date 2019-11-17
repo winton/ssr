@@ -50,8 +50,7 @@ export class Ssr {
 
     return `
 const stack = {
-${stackImports}
-}
+${stackImports}}
 import("${stack.loaded}").then((lib) => {
   window.loaded = lib.default
   loaded.load(stack)
