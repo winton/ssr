@@ -53,11 +53,7 @@ const stack = {
 ${stackImports}
 }
 import("${stack.loaded}").then((lib) => {
-  const log = !!location.search.match(/[?&]log/)
-
   window.loaded = lib.default
-  window.process = { env: { LOG: log } }
-  
   loaded.load(stack)
   return loaded.wait("${component}")
 }).then(({ ${component} }) => {
