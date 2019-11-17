@@ -18,7 +18,25 @@ export class Ssr {
     }
   }
 
-  clientScript(
+  async layout(
+    headComponent: any,
+    bodyComponent: any,
+    ...args: any[]
+  ): Promise<string> {
+    const elements: Record<string, Element> = {}
+
+    await this.fn2.run(elements, [], {
+      body: () => bodyComponent.element(...args),
+      head: () => headComponent.element(...args),
+    })
+
+    const body = this.serialize(elements.body)
+    const head = this.serialize(elements.head)
+
+    return `<!doctype html><html>${head}<body>${body}</body></html>`
+  }
+
+  script(
     component: string,
     stack: Record<string, string>
   ): string {
@@ -45,24 +63,6 @@ import("${stack.loaded}").then((lib) => {
 }).then(({ ${component} }) => {
   ${component}.element()
 })`
-  }
-
-  async layout(
-    headComponent: any,
-    bodyComponent: any,
-    ...args: any[]
-  ): Promise<string> {
-    const elements: Record<string, Element> = {}
-
-    await this.fn2.run(elements, [], {
-      body: () => bodyComponent.element(...args),
-      head: () => headComponent.element(...args),
-    })
-
-    const body = this.serialize(elements.body)
-    const head = this.serialize(elements.head)
-
-    return `<!doctype html><html>${head}<body>${body}</body></html>`
   }
 
   serialize(el: Element): string {
