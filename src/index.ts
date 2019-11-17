@@ -38,20 +38,21 @@ export class Ssr {
 
   script(
     component: string,
-    stack: Record<string, string>
+    libs: Record<string, string>,
+    components: Record<string, string>
   ): string {
-    let stackImports = `  ${component}: import("${stack[component]}"),\n`
+    let imports = `  ${component}: import("${components[component]}"),\n`
 
-    for (const libName in stack) {
-      if (libName !== component && libName !== "loaded") {
-        stackImports += `  ${libName}: import("${stack[libName]}"),\n`
+    for (const libName in libs) {
+      if (libName !== "loaded") {
+        imports += `  ${libName}: import("${libs[libName]}"),\n`
       }
     }
 
     return `
 const stack = {
-${stackImports}}
-import("${stack.loaded}").then((lib) => {
+${imports}}
+import("${libs.loaded}").then((lib) => {
   window.loaded = lib.default
   loaded.load(stack)
   return loaded.wait("${component}")
