@@ -1,5 +1,8 @@
+import { Fn2 } from "@fn2/loaded"
+
 export class Ssr {
   dom: Window = null
+  fn2: Fn2 = null
 
   loaded(): void {
     for (const i in this.dom) {
@@ -32,13 +35,34 @@ const stack = {
 ${stackImports}
 }
 import("${stack.loaded}").then((lib) => {
+  const log = !!location.search.match(/[?&]log/)
+
   window.loaded = lib.default
-  window.process = { env: { LOG: !!location.search.match(/[?&]log/) } }
+  window.process = { env: { LOG: log } }
+  
   loaded.load(stack)
   return loaded.wait("${component}")
 }).then(({ ${component} }) => {
   ${component}.element()
 })`
+  }
+
+  async layout(
+    headComponent: any,
+    bodyComponent: any,
+    ...args: any[]
+  ): Promise<string> {
+    const elements: Record<string, Element> = {}
+
+    await this.fn2.run(elements, [], {
+      body: () => bodyComponent.element(...args),
+      head: () => headComponent.element(...args),
+    })
+
+    const body = this.serialize(elements.body)
+    const head = this.serialize(elements.head)
+
+    return `<!doctype html><html>${head}<body>${body}</body></html>`
   }
 
   serialize(el: Element): string {
