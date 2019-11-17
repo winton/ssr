@@ -33,7 +33,7 @@ ${stackImports}
 }
 import("${stack.loaded}").then((lib) => {
   window.loaded = lib.default
-  window.process = { env: { LOG: true } }
+  window.process = { env: { LOG: !!location.search.match(/[?&]log/) } }
   loaded.load(stack)
   return loaded.wait("${component}")
 }).then(({ ${component} }) => {
