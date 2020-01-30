@@ -4,7 +4,7 @@ import { readFile } from "fs-extra"
 
 export const EXT_REGEX = /(.+)(\.[^\.]+)$/
 
-export async function clientAsset(
+export async function clientAssets(
   paths: Record<string, string>
 ): Promise<Record<string, string>> {
   const filled = {}

@@ -1,15 +1,17 @@
 import { join } from "path"
 
 import expect from "./expect"
-import { clientAsset, serverAsset } from "../src/asset"
+import { clientAssets, serverAsset } from "../src/asset"
 
 const root = join(__dirname, "../")
 
 describe("clientAsset", () => {
   it("should return client paths", async () => {
-    expect(await clientAsset({ index: "./dist" })).toEqual({
-      index: "./dist/esm/index.mjs",
-    })
+    expect(await clientAssets({ index: "./dist" })).toEqual(
+      {
+        index: "./dist/esm/index.mjs",
+      }
+    )
   })
 })
 
