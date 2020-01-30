@@ -1,0 +1,58 @@
+import { join } from "path"
+import globby from "globby"
+import { readFile } from "fs-extra"
+
+export const EXT_REGEX = /(.+)(\.[^\.]+)$/
+
+export default async function(
+  path: string
+): Promise<[number, string, string] | void> {
+  const match = path.match(EXT_REGEX)
+
+  if (!match || !match[2]) {
+    return
+  }
+
+  let [, name, ext] = match
+  let map = ""
+
+  if (ext === ".map") {
+    map = ext
+    ;[, name, ext] = name.match(EXT_REGEX)
+  }
+
+  const root = join(
+    __dirname,
+    __dirname.includes("/dist/") ? "../../" : "../"
+  )
+
+  const nameExt = process.env.STAGE ? "" : "-*"
+
+  const glob = [
+    join(root, path),
+    join(root, `${name}${nameExt}${ext}${map}`),
+    join(root, `${name}.js${map}`),
+  ]
+
+  const paths = await globby(glob)
+
+  if (paths[0]) {
+    const mjs = await readFile(paths[0])
+
+    let contentType = "text/javascript"
+
+    if (ext === ".css") {
+      contentType = "text/css"
+    }
+
+    if (ext === ".ts") {
+      contentType = "application/typescript"
+    }
+
+    if (map) {
+      contentType = "application/json"
+    }
+
+    return [200, contentType, mjs.toString()]
+  }
+}

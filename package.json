@@ -24,6 +24,7 @@
     "@fn2/patch": "0.10.0",
     "@fn2/render": "0.10.0",
     "@fn2/tiny-id": "0.5.0",
+    "@types/fs-extra": "8.0.1",
     "@types/mocha": "5.2.7",
     "@types/node": "12.12.7",
     "@typescript-eslint/eslint-plugin": "2.7.0",
@@ -44,7 +45,9 @@
     "typescript": "3.7.2",
     "undom": "0.4.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fs-extra": "8.1.0"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm test"
