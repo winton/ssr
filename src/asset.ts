@@ -4,7 +4,46 @@ import { readFile } from "fs-extra"
 
 export const EXT_REGEX = /(.+)(\.[^\.]+)$/
 
-export default async function(
+export async function clientAsset(
+  paths: Record<string, string>
+): Promise<Record<string, string>> {
+  const filled = {}
+  const promises = []
+
+  for (const id in paths) {
+    const nodeModule = paths[id].includes("/node_modules/")
+
+    const mjs = process.env.STAGE || nodeModule
+    const name = mjs ? `${id}-*` : id
+
+    const subdir =
+      id.includes("Component") && !mjs ? "components/" : ""
+
+    const dir = mjs ? "mjs" : "esm"
+    const ext = mjs ? "mjs" : "js"
+
+    promises.push(
+      (async (): Promise<void> => {
+        const glob = [
+          paths[id],
+          dir,
+          `${subdir}${name}.${ext}`,
+        ].join("/")
+
+        filled[id] = (await globby(glob))[0].replace(
+          ".js",
+          ".mjs"
+        )
+      })()
+    )
+  }
+
+  await Promise.all(promises)
+
+  return filled
+}
+
+export async function serverAsset(
   root: string,
   path: string
 ): Promise<[number, string, string] | void> {

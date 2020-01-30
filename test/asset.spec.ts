@@ -1,26 +1,34 @@
 import { join } from "path"
 
 import expect from "./expect"
-import asset from "../src/asset"
+import { clientAsset, serverAsset } from "../src/asset"
 
 const root = join(__dirname, "../")
 
-describe("assets", () => {
+describe("clientAsset", () => {
+  it("should return client paths", async () => {
+    expect(await clientAsset({ index: "./dist" })).toEqual({
+      index: "./dist/esm/index.mjs",
+    })
+  })
+})
+
+describe("serverAsset", () => {
   it("should return correct ts path", async () => {
     const [code, type] =
-      (await asset(root, "/test/asset.spec.ts")) || []
+      (await serverAsset(root, "/test/asset.spec.ts")) || []
 
     expect(code).toBe(200)
     expect(type).toBe("application/typescript")
   })
 
   it("should return void if not found", async () => {
-    expect(await asset(root, "/404")).toBeUndefined()
+    expect(await serverAsset(root, "/404")).toBeUndefined()
   })
 
   it("should return correct dist path", async () => {
     const [code, type] =
-      (await asset(root, "/dist/esm/index.mjs")) || []
+      (await serverAsset(root, "/dist/esm/index.mjs")) || []
 
     expect(code).toBe(200)
     expect(type).toBe("text/javascript")
@@ -28,7 +36,7 @@ describe("assets", () => {
 
   it("should return correct node_modules path", async () => {
     const [code, type] =
-      (await asset(
+      (await serverAsset(
         root,
         "/node_modules/@fn2/loaded/dist/esm/index.mjs"
       )) || []
