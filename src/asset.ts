@@ -5,6 +5,7 @@ import { readFile } from "fs-extra"
 export const EXT_REGEX = /(.+)(\.[^\.]+)$/
 
 export default async function(
+  root: string,
   path: string
 ): Promise<[number, string, string] | void> {
   const match = path.match(EXT_REGEX)
@@ -20,11 +21,6 @@ export default async function(
     map = ext
     ;[, name, ext] = name.match(EXT_REGEX)
   }
-
-  const root = join(
-    __dirname,
-    __dirname.includes("/dist/") ? "../../" : "../"
-  )
 
   const nameExt = process.env.STAGE ? "" : "-*"
 
