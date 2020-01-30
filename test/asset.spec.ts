@@ -1,10 +1,10 @@
 import expect from "./expect"
-import assets from "../src/assets"
+import assets from "../src/asset"
 
 describe("assets", () => {
   it("should return correct ts path", async () => {
     let code: number, type: string
-    const asset = await assets("/test/assets.spec.ts")
+    const asset = await assets("/test/asset.spec.ts")
 
     if (asset) {
       ;[code, type] = asset
