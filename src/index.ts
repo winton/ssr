@@ -58,7 +58,7 @@ import("${libs.loaded}").then((lib) => {
   return loaded.wait("${component}")
 }).then(({ ${component} }) => {
   ${component}.element()
-})`
+});`
   }
 
   serialize(el: Element): string {
