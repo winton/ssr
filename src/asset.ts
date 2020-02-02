@@ -30,10 +30,9 @@ export async function clientAssets(
           `${subdir}${name}.${ext}`,
         ].join("/")
 
-        filled[id] = (await globby(glob))[0].replace(
-          ".js",
-          ".mjs"
-        )
+        filled[id] = (await globby(glob))[0]
+          .replace(".js", ".mjs")
+          .slice(1)
       })()
     )
   }

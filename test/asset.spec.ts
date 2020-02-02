@@ -9,7 +9,7 @@ describe("clientAsset", () => {
   it("should return client paths", async () => {
     expect(await clientAssets({ index: "./dist" })).toEqual(
       {
-        index: "./dist/esm/index.mjs",
+        index: "/dist/esm/index.mjs",
       }
     )
   })
