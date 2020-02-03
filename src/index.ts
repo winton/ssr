@@ -55,8 +55,8 @@ ${imports}}
 import("${libs.loaded}").then((lib) => {
   window.loaded = lib.default
   loaded.load(stack)
-  return loaded.wait("${component}")
-}).then(({ renderClient, ${component} }) => {
+  return loaded.wait("${component}", "renderClient")
+}).then(() => {
   window.history.pushState({}, "", window.location.pathname)
 });`
   }
