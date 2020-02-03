@@ -57,7 +57,7 @@ import("${libs.loaded}").then((lib) => {
   loaded.load(stack)
   return loaded.wait("${component}")
 }).then(({ ${component} }) => {
-  ${component}.element()
+  window.history.pushState({}, "", window.location.pathname)
 });`
   }
 
