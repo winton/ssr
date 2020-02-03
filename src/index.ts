@@ -56,7 +56,7 @@ import("${libs.loaded}").then((lib) => {
   window.loaded = lib.default
   loaded.load(stack)
   return loaded.wait("${component}")
-}).then(({ ${component} }) => {
+}).then(({ renderClient, ${component} }) => {
   window.history.pushState({}, "", window.location.pathname)
 });`
   }
