@@ -24,16 +24,28 @@ export class Ssr {
     ...args: any[]
   ): Promise<string> {
     const elements: Record<string, Element> = {}
+    const runners = {}
 
-    await this.fn2.run(elements, [], {
-      body: () => bodyComponent.element(...args),
-      head: () => headComponent.element(...args),
-    })
+    if (headComponent) {
+      runners["head"] = (): Element =>
+        headComponent.element(...args)
+    }
 
-    const body = this.serialize(elements.body)
-    const head = this.serialize(elements.head)
+    if (bodyComponent) {
+      runners["body"] = (): Element =>
+        bodyComponent.element(...args)
+    }
 
-    return `<!doctype html><html>${head}<body>${body}</body></html>`
+    await this.fn2.run(elements, [], runners)
+
+    if (elements.body && elements.head) {
+      const body = this.serialize(elements.body)
+      const head = this.serialize(elements.head)
+
+      return `<!doctype html><html>${head}<body>${body}</body></html>`
+    } else if (elements.body) {
+      return this.serialize(elements.body)
+    }
   }
 
   script(
