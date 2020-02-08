@@ -102,6 +102,10 @@ import("${libs.loaded}").then((lib) => {
       str += ' id="' + el.id + '"'
     }
 
+    if (el["value"]) {
+      str += ' value="' + el["value"] + '"'
+    }
+
     str += ">"
 
     for (let i = 0; i < el.childNodes.length; i++) {

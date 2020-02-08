@@ -1,5 +1,3 @@
-/** @jsx render.createElement */
-
 import patch from "@fn2/patch"
 import render from "@fn2/render"
 import loaded from "@fn2/loaded"
@@ -17,6 +15,7 @@ class Component {
       <div>
         <h1>Hello!</h1>
         <h2>Good to see you here.</h2>
+        <option value="123">123</option>
       </div>
     )
   }
@@ -39,14 +38,16 @@ beforeEach(() => {
   })
 })
 
-it("serializes", () => {
-  expect(ssr.serialize(component.build())).toBe(
-    "<div><h1>Hello!</h1><h2>Good to see you here.</h2></div>"
-  )
-})
+describe("serialize", () => {
+  it("serializes", () => {
+    expect(ssr.serialize(component.build())).toBe(
+      '<div><h1>Hello!</h1><h2>Good to see you here.</h2><option value="123">123</option></div>'
+    )
+  })
 
-it("getElementById", () => {
-  const el = <div id="hi" />
-  render.doc.body.appendChild(el)
-  expect(render.doc.getElementById("hi")).toBe(el)
+  it("getElementById", () => {
+    const el = <div id="hi" />
+    render.doc.body.appendChild(el)
+    expect(render.doc.getElementById("hi")).toBe(el)
+  })
 })
