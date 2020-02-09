@@ -38,7 +38,7 @@ export class Ssr {
       })
     }
 
-    await this.fn2.run(elements, [], runners)
+    await this.fn2.run(elements, [], ...runners)
 
     if (elements.body && elements.head) {
       const body = this.serialize(elements.body)
