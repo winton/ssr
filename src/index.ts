@@ -24,16 +24,18 @@ export class Ssr {
     ...args: any[]
   ): Promise<string> {
     const elements: Record<string, Element> = {}
-    const runners = {}
+    const runners = []
 
     if (headComponent) {
-      runners["head"] = (): Element =>
-        headComponent.element(...args)
+      runners.push({
+        head: (): Element => headComponent.element(...args),
+      })
     }
 
     if (bodyComponent) {
-      runners["body"] = (): Element =>
-        bodyComponent.element(...args)
+      runners.push({
+        body: (): Element => bodyComponent.element(...args),
+      })
     }
 
     await this.fn2.run(elements, [], runners)
