@@ -76,6 +76,10 @@ import("${libs.loaded}").then((lib) => {
   }
 
   serialize(el: Element): string {
+    if (el === undefined) {
+      return ""
+    }
+
     if (el.nodeType === 3) {
       return el.nodeValue
     }
